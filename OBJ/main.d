@@ -32,4 +32,5 @@
 ..\obj\main.o: ..\SYS\delay\delay.h
 ..\obj\main.o: ..\HARDWARE\can.h
 ..\obj\main.o: ..\HARDWARE\timer2.h
+..\obj\main.o: ..\HARDWARE\led.h
 ..\obj\main.o: YTCH_Driver.h

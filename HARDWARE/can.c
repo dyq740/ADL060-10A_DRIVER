@@ -48,30 +48,6 @@ u8 CAN1_Mode_Init(u8 tsjw,u8 tbs2,u8 tbs1,u16 brp,u8 mode)
 ////(以上为修改)
 
 
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//    //初始化GPIO
-//	  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11| GPIO_Pin_12;
-//    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
-//    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//推挽输出
-//    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100MHz
-//    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//上拉
-//    GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化PA11,PA12
-	
-//	  //引脚复用映射配置
-//	  GPIO_PinAFConfig(GPIOA,GPIO_PinSource11,GPIO_AF_CAN1); //GPIOA11复用为CAN1
-//	  GPIO_PinAFConfig(GPIOA,GPIO_PinSource12,GPIO_AF_CAN1); //GPIOA12复用为CAN1
-	  
   	//CAN单元设置
    	CAN_InitStructure.CAN_TTCM=DISABLE;	//非时间触发通信模式   
   	CAN_InitStructure.CAN_ABOM=DISABLE;	//软件自动离线管理	  
@@ -121,28 +97,22 @@ u8 CAN2_Mode_Init(u8 tsjw,u8 tbs2,u8 tbs1,u16 brp,u8 mode)
    	NVIC_InitTypeDef  NVIC_InitStructure;
 #endif
     //使能相关时钟
-	  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);//使能PORTB时钟	                   											 
+	  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_AFIO, ENABLE);//使能PORTB时钟	                   											 
 
   	RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1|RCC_APB1Periph_CAN2, ENABLE);//使能CAN1时钟	
-	
+	 //GPIOA11复用为CAN1
+		GPIO_PinRemapConfig(GPIO_Remap_CAN2,ENABLE);
     //初始化GPIOB
-	  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+	  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;//上拉输入
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//100MHz
     GPIO_Init(GPIOB, &GPIO_InitStructure);//初始化PB12
 	
-		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
+		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;//上拉输入
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//100MHz
     GPIO_Init(GPIOB, &GPIO_InitStructure);//初始化PB13
-	
-	
-//	  //引脚复用映射配置
-//	  GPIO_PinAFConfig(GPIOB,GPIO_PinSource12,GPIO_AF_CAN2); //GPIOA11复用为CAN1
-//	  GPIO_PinAFConfig(GPIOB,GPIO_PinSource13,GPIO_AF_CAN2); //GPIOA12复用为CAN1
 	  
-//			CAN_DeInit(CAN2);
-//			CAN_StructInit(&CAN_InitStructure);
   	//CAN单元设置
    	CAN_InitStructure.CAN_TTCM=DISABLE;	//非时间触发通信模式   
   	CAN_InitStructure.CAN_ABOM=DISABLE;	//软件自动离线管理	  
